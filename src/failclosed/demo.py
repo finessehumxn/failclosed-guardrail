@@ -6,6 +6,7 @@ stub generator, so no API key is needed:
 1. A normal question pauses at the human-in-the-loop interrupt, then resumes.
 2. A crisis message ends at the guardrail; generation never runs.
 3. The same normal question with a broken classifier ends as "unavailable".
+4. A crisis message with a broken classifier is caught by the backstop.
 """
 
 from __future__ import annotations
@@ -46,7 +47,7 @@ def _interrupt_payload(graph, config) -> dict | None:
 
 
 def _rule(title: str) -> None:
-    print(f"\n=== {title} " + "=" * max(0, 60 - len(title)))
+    print(f"\n--- {title}")
 
 
 def main() -> int:
@@ -91,6 +92,14 @@ def main() -> int:
     print(f"input:            {normal}")
     print(f"guardrail status: {state['status']} (source: {state['source']})")
     print(f"message:          {state['message']}")
+    print(f"generate calls:   {gen.calls}")
+
+    _rule("4. classifier down, crisis text: backstop still routes to crisis")
+    gen = CountingGenerator()
+    graph = build_graph(BrokenClassifier(), generate=gen)
+    state = graph.invoke({"input": crisis}, _config())
+    print(f"input:            {crisis}")
+    print(f"guardrail status: {state['status']} (source: {state['source']})")
     print(f"generate calls:   {gen.calls}")
 
     return 0
