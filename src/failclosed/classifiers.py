@@ -55,6 +55,8 @@ _CRISIS = _rx(
     r"(?:don'?t|do not) (?:want to|wanna) (?:be here|exist|wake up)",
     r"(?:don'?t|can'?t) see the point (?:anymore|of living|in living)",
     r"no point (?:in living|anymore)",
+    r"(?:what'?s|whats|is there) (?:even )?(?:the|a|any) point (?:of|in) (?:anything|any of (?:this|it)|living|it all)",
+    r"want (?:it|everything|this) (?:all )?to (?:stop|end)|want(?:ing)? (?:the pain|everything) to (?:stop|end)",
     # Means-seeking. These often arrive phrased as ordinary medication
     # questions, which is exactly why they must be checked before the
     # domain vocabulary decides the input is a normal "pass".
@@ -72,6 +74,8 @@ _EMERGENCY = _rx(
     r"overdos(?:e|ed|ing)|took too many",
     r"anaphyla\w*|throat (?:is )?(?:closing|swelling)|face is swelling",
     r"slurred speech|face (?:is )?drooping",
+    # Head injury with a red-flag sign (vomiting, confusion, drowsiness).
+    r"(?:hit|bumped|banged|hurt|injured) (?:his|her|their|my|its) head\b.{0,80}?(?:throw\w* up|vomit\w*|confus\w*|drows\w*|won'?t stay awake)",
     # Spanish
     r"no puedo respirar|dolor (?:en el|de) pecho|ataque al coraz[oó]n",
 )
