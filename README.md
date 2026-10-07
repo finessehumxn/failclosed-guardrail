@@ -17,7 +17,7 @@ It generalizes a pattern that runs in production in HumxnMed, a health-informati
 Requires Python 3.12.
 
 ```bash
-cd failclosed-guardrail
+git clone https://github.com/finessehumxn/failclosed-guardrail && cd failclosed-guardrail
 python3.12 -m venv .venv
 source .venv/bin/activate
 pip install -e ".[dev]"
