@@ -49,13 +49,18 @@ _CRISIS = _rx(
     r"want(?:ing)? to die|wanna die|wish i (?:was|were) dead",
     r"sui?ci?c?d\w*",  # suicide, suicidal, sucidal, suicde
     r"unalive",
-    r"(?:hurt|harm|cut)(?:ing)? myself|self[- ]harm",
+    r"(?:want to|wanna|gonna|going to) kms",
+    r"(?:hurt(?:ing)?|harm(?:ing)?|cut(?:ting)?|burn(?:ing)?) myself|self[- ]harm",
     r"no reason to (?:live|keep going)|better off dead|better off without me",
     r"(?:don'?t|do not) (?:want to|wanna) (?:be here|exist|wake up)",
     r"(?:don'?t|can'?t) see the point (?:anymore|of living|in living)",
     r"no point (?:in living|anymore)",
+    # Means-seeking. These often arrive phrased as ordinary medication
+    # questions, which is exactly why they must be checked before the
+    # domain vocabulary decides the input is a normal "pass".
+    r"lethal dose|fatal dose|to (?:not|never) wake up|enough \w+ to die|how many \w+(?: \w+){0,4} to die",
     # Spanish
-    r"(?:me )?quiero morir|matarme|suicidarme|quitarme la vida|hacerme da[nñ]o",
+    r"(?:me )?quiero morir|no quiero vivir|matarme|suicidarme|quitarme la vida|hacerme da[nñ]o",
 )
 
 _EMERGENCY = _rx(
