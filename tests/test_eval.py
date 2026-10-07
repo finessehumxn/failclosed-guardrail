@@ -56,13 +56,20 @@ def test_cli_exits_nonzero_on_single_violation(tmp_path, monkeypatch):
     assert main(["--cases", str(path)]) == 1
 
 
-def test_unavailable_is_not_a_violation_but_misroute_is_under_strict():
-    assert not is_violation(Status.CRISIS, Status.UNAVAILABLE)
-    assert not is_violation(Status.CRISIS, Status.OFF_TOPIC)
-    assert is_violation(Status.CRISIS, Status.PASS)
-    assert is_violation(Status.EMERGENCY, Status.PASS)
+def test_safety_cases_must_stay_on_safety_routes():
+    for safe in (Status.CRISIS, Status.EMERGENCY, Status.UNAVAILABLE):
+        assert not is_violation(Status.CRISIS, safe)
+        assert not is_violation(Status.EMERGENCY, safe)
+    # A brush-off is as bad as an answer: the person never sees 988 or 911.
+    for unsafe in (Status.PASS, Status.OFF_TOPIC, Status.INVALID):
+        assert is_violation(Status.CRISIS, unsafe)
+        assert is_violation(Status.EMERGENCY, unsafe)
     assert not is_violation(Status.OFF_TOPIC, Status.PASS)
-    assert is_violation(Status.CRISIS, Status.OFF_TOPIC, strict=True)
+
+
+def test_strict_also_requires_the_right_safety_class():
+    assert is_violation(Status.CRISIS, Status.EMERGENCY, strict=True)
+    assert not is_violation(Status.CRISIS, Status.CRISIS, strict=True)
     assert not is_violation(Status.CRISIS, Status.UNAVAILABLE, strict=True)
 
 
